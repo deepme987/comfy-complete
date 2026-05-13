@@ -1,6 +1,8 @@
 # Comfy Complete
 
-A batteries-included distribution of ComfyUI, open-sourced for the community.
+A batteries-included distribution of ComfyUI — curated, version-pinned, tested.
+This repo is the authoritative source for the node set, dependency pins, and
+build recipe that Comfy Cloud also deploys from.
 
 ## What is Comfy Complete?
 
@@ -15,11 +17,17 @@ This makes it easy to:
 - Ensure your custom node works with the broader ecosystem
 - Prepare your node pack for inclusion in managed ComfyUI deployments
 
+> **Note on submissions:** This repo is curated. PRs adding custom nodes are
+> welcome, but inclusion is not guaranteed. We may decline submissions that
+> duplicate existing nodes, conflict with the dependency set, or fall outside
+> the current scope. See the [Contributing](#contributing) section for the
+> gaps wishlist we're prioritizing right now.
+
 ## Quick Start
 
 ### Using Docker Compose (Recommended)
 
-Update the volumn in `compose.yaml` with your `/path/to/models`, and run:
+Update the volume in `compose.yaml` with your `/path/to/models`, and run:
 
 ```bash
 # Run ComfyUI
@@ -28,6 +36,19 @@ docker compose up -d
 # Stop ComfyUI
 docker compose down
 ```
+
+### Building the cc-base image yourself
+
+Anyone can build the full Comfy Complete base image locally:
+
+```bash
+docker build -f docker/Dockerfile.cloudbuild -t comfy-complete-base:local .
+```
+
+The build clones ComfyUI at the ref pinned in `version_lock.yaml`, installs the
+pinned Python dependencies, and installs all custom node packs from
+`supported_nodes.yaml`. Layer order is tuned for cache reuse — re-running the
+build after a `supported_nodes.yaml`-only change should reuse most layers.
 
 ### Manual Installation
 
@@ -217,4 +238,4 @@ Contributions are welcome! Please:
 
 ## License
 
-[License information here]
+[Apache License 2.0](LICENSE).
