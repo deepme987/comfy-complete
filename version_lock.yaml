@@ -8,10 +8,10 @@
 
 pinned:
   comfyui:
-    ref: v0.21.0
+    ref: v0.21.1
 
   comfyui_frontend_package:
     ref: 1.43.18
 
   comfyui_workflow_templates:
-    ref: 0.9.73
+    ref: 0.9.75
