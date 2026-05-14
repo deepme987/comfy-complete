@@ -537,8 +537,6 @@ node_packs:
       "Write to Video":
         - WritesToDisk
 
-  - name: comfyui-sharp
-    version: "0.0.3"
 
   - name: comfyui-logic
     version: "1.0.0"
