@@ -12,6 +12,21 @@ Prepares a complete comfy-complete submission: generates the
 validation, and creates a PR-ready branch. This is the last step after
 `/build-node` and `/validate-node`.
 
+> **Eligibility heads-up.** comfy-complete is a curated distribution. We may
+> decline submissions that duplicate existing packs, conflict with the
+> dependency set, or fall outside the current scope — even if your PR is
+> technically clean. Before investing time in a full submission:
+>
+> 1. Check that your pack is not already covered (`grep <name> supported_nodes.yaml`).
+> 2. Check that your pack has at least 1k Comfy Registry downloads (soft threshold,
+>    discussed case-by-case).
+> 3. Open a draft PR or issue first to confirm interest from maintainers, before
+>    polishing the full submission.
+>
+> The submission flow exists primarily as a transparency + standards mechanism.
+> Most internal pack adds and bumps come from the cloud team using this same
+> flow (dogfood).
+
 ---
 
 ## Hard Rules
