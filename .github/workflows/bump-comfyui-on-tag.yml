@@ -209,8 +209,9 @@ jobs:
             echo "${DELIM}"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Create draft PR
+      - name: Create PR
         if: steps.check.outputs.needs_update == 'true'
+        id: create-pr
         uses: peter-evans/create-pull-request@v8.1.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -219,7 +220,19 @@ jobs:
           body: ${{ steps.pr-body.outputs.body }}
           branch: chore/update-comfyui-${{ env.NEW_TAG }}
           delete-branch: true
-          draft: true
+          # Not draft -- this is automation, ready for CI to gate.
+
+      # Enable auto-merge so the PR self-merges once CC's own CI passes
+      # (validate, yaml-lint, test-workflows, custom-node-review). Cloud picks
+      # up the change via notify-cloud -> comfy-complete-sync -> auto-PR on
+      # cloud; the cloud-side PR is the human-review gate before prod deploy.
+      - name: Enable auto-merge on PR
+        if: steps.check.outputs.needs_update == 'true' && steps.create-pr.outputs.pull-request-number
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ steps.create-pr.outputs.pull-request-number }}
+        run: |
+          gh pr merge "$PR" --auto --squash || echo "::warning::auto-merge could not be enabled (likely repo settings); PR will need manual merge"
 
       - name: No update needed
         if: steps.check.outputs.needs_update == 'false'
